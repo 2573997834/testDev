@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="/static/elementUI/css/index.css"/>
+</head>
+<script src="/static/vue/vue.min.js" type="text/javascript" charset="UTF-8"></script>
+<script src="/static/vue/axios.min.js" type="text/javascript" charset="UTF-8"></script>
+<script src="/static/vue/httpRequest.js" type="text/javascript" charset="UTF-8"></script>
+<script src="/static/elementUI/index.js" type="text/javascript" charset="UTF-8"></script>
+<body>
+<div id="app">
+    {{name}}
+</div>
+</body>
+<script>
+    var app = new Vue({
+        el:'#app',
+        data:{
+            name:'测试2',
+            tableData :[],
+            menu:[
+                {
+                    submenu:'1',
+                    title:'测试1',
+                    item:[
+                        {
+                            title:'菜单1',
+                            path:'/test/test3',
+                        },
+                        {
+                            title:'菜单2',
+                            path:'/test/test3',
+                        },
+                        {
+                            title:'菜单3',
+                            path:'/test/test3',
+                        },
+                    ]
+                }
+            ]
+        },
+        mounted(){
+            //this.getdata();
+        },
+        methods:{
+            getdata(){
+                axiosGet("/test/test1").then(res => {
+                    console.log(res)
+                })
+            },
+            menuClick(menu){
+                window.open(menu.index);
+            }
+        }
+    })
+</script>
+<style>
+    html,body,#app,.el-container{
+        /*设置内部填充为0，几个布局元素之间没有间距*/
+        padding: 0px;
+        /*外部间距也是如此设置*/
+        margin: 0px;
+        /*统一设置高度为100%*/
+        height: 100%;
+    }
+
+    .el-header {
+        background-color: #B3C0D1;
+        color: #333;
+        line-height: 60px;
+    }
+
+    .el-aside {
+        color: #333;
+    }
+</style>
+</html>

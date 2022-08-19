@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oms.testdev.dao.MenuRoleMapper">
+  <resultMap id="BaseResultMap" type="com.oms.testdev.model.MenuRole">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="roleid" jdbcType="VARCHAR" property="roleid" />
+    <result column="menuid" jdbcType="VARCHAR" property="menuid" />
+  </resultMap>
+</mapper>

@@ -1,0 +1,30 @@
+html, body, #app, .el-container {
+        /*设置内部填充为0，几个布局元素之间没有间距*/
+        padding: 0px;
+        /*外部间距也是如此设置*/
+        margin: 0px;
+        /*统一设置高度为100%*/
+        height: 100%;
+}
+.el-menu li {
+    width: 200px;
+}
+.leftHead {
+    height: 60px;
+    width: 200px;
+    background-color: #23262e;
+    text-align: center;
+    line-height: 71px;
+    font-size: 20px;
+    color: #fff;
+}
+
+.mainPage {
+    margin-top: -12px;
+}
+
+.el-header {
+    background-color: #23262e;
+    color: #fff;
+    line-height: 60px;
+}

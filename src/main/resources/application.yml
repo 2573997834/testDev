@@ -1,0 +1,101 @@
+server:
+  port: 8080 #8080
+  servlet:
+    context-path: /
+    session:
+      timeout: 30
+  tomcat:
+    # tomcat的URI编码
+    uri-encoding: UTF-8
+    # tomcat最大线程数，默认为200
+    max-threads: 800
+    # Tomcat启动初始化的线程数，默认值25
+    min-spare-threads: 30
+
+spring:
+  # 文件上传
+  servlet:
+    multipart:
+      # 单个文件大小
+      max-file-size: 20MB
+      # 设置总上传的文件大小
+      max-request-size: 50MB
+  mvc:
+    view:
+      prefix: /templates
+      suffix: .html
+#    static-path-pattern: /static/**
+  thymeleaf:
+    cache: false
+  # Redis配置
+  redis:
+    # 这是我的虚拟机IP
+    host: 127.0.0.1
+    port: 7936 #6379
+    password: zhny6608!
+    # 操作0号数据库，默认有16个数据库
+    database: 0
+    jedis:
+      pool:
+        max-active: 8 # 最大连接数
+        max-wait: 1ms # 连接池最大阻塞等待时间
+        max-idle: 4   # 连接池中的最大空闲连接
+        min-idle: 0   # 连接池中的最小空闲连接
+    cache:
+      redis:
+        time-to-live: 60000 # 设置数据过期时间为1分钟（ms）
+  datasource:
+    druid:
+      stat-view-servlet:
+        enabled: true
+        # 禁用HTML页面上的“Reset All”功能
+        reset-enable: false
+        # 登录名
+        login-username: admin
+        # 登录密码
+        login-password: 123456
+    dynamic:
+      druid:
+        min-idle: 1
+        initial-size: 0
+        max-active: 20
+        max-wait: 15000
+        time-between-eviction-runs-millis: 60000
+        min-evictable-idle-time-millis: 300000
+        validation-query: SELECT 1
+        test-while-idle: true
+        test-on-borrow: false
+        test-on-return: false
+        pool-prepared-statements: true
+        filters: stat
+        connection-properties: druid.stat.mergeSql\=true;druid.stat.slowSqlMillis\=5000
+        max-pool-prepared-statement-per-connection-size: 100
+      # 指定默认数据源
+      primary: mysql
+      # true：找不到数据源报错，false：找不到数据源则使用数据源
+      strict: true
+      datasource:
+#        dm:
+#          driver-class-name: dm.jdbc.driver.DmDriver
+#          url: jdbc:dm://localhost:12345/EMS
+#          username: SYSDBA
+#          password: SYSDBA
+#          durid:
+#            validation-query: SELECT 1
+        mysql:
+          driver-class-name: com.mysql.jdbc.Driver
+          url: jdbc:mysql://localhost:3306/testdev?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC&nuLlCatalogMeansCurrent=true
+          username: root
+          password: 123456
+          durid:
+            validation-query: SELECT 1
+  devtools:
+    restart:
+      enabled: true  #设置开启热部署
+      additional-paths: src/main/java #重启目录
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.oms.testdev.model
+logging:
+  level:
+    com.oms.testdev.dao: debug

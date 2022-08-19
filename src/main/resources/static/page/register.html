@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户注册</title>
+    <link rel="stylesheet" type="text/css" href="/static/elementUI/css/index.css"/>
+</head>
+<script src="/static/vue/vue.min.js" type="text/javascript" charset="UTF-8"></script>
+<script src="/static/vue/axios.min.js" type="text/javascript" charset="UTF-8"></script>
+<script src="/static/vue/httpRequest.js" type="text/javascript" charset="UTF-8"></script>
+<script src="/static/elementUI/index.js" type="text/javascript" charset="UTF-8"></script>
+<script src="/static/encrypt/encrypt.js" type="text/javascript" charset="UTF-8"></script>
+<body>
+<div id="app">
+    <div class="registerdiv">
+        <div class="leftHead">
+            TESTDEV
+        </div>
+        <el-form  class="registerForm" :model="ruleForm" :rules="rules" ref="ruleForm" :inline="false">
+            <el-form-item label="用户名" prop="username">
+                <el-input v-model="ruleForm.username" @keyup.native="userNameCheck"></el-input>
+            </el-form-item>
+            <el-form-item label="密码" prop="password">
+                <el-input type="password" v-model="ruleForm.password"></el-input>
+            </el-form-item>
+            <el-form-item label="确认密码" prop="password2">
+                <el-input type="password" v-model="ruleForm.password2"></el-input>
+            </el-form-item>
+            <el-form-item label="真实姓名" prop="fullname">
+                <el-input v-model="ruleForm.fullname"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button style="float: left" class="registerButton" type="primary" @click="submitForm('ruleForm')" @keyup.enter.native="submitForm('ruleForm')">注册</el-button>
+                <el-button style="float: right" class="registerButton" @click="resetForm('ruleForm')">重置</el-button>
+                <el-link style="float: right" :underline="false" type="primary" @click="goLogin">登录</el-link>
+            </el-form-item>
+        </el-form>
+    </div>
+</div>
+</body>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: function () {
+            password2 = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请再次输入密码'));
+                } else if (value !== this.ruleForm.password) {
+                    callback(new Error('两次输入密码不一致!'));
+                } else {
+                    callback();
+                }
+            }
+            nameCheck = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请输入用户名'));
+                } else if (value.length < 3 || value.length > 20) {
+                    callback(new Error('长度在 3 到 20 个字符'));
+                } else if (value) {
+                    if (!this.namecheck) {
+                        callback(new Error('用户名已存在'));
+                    } else {
+                        callback();
+                    }
+                } else {
+                    callback();
+                }
+            }
+            return {
+                namecheck: false,
+                ruleForm: {
+                    username: '',
+                    password: '',
+                    password2: '',
+                    fullname: ''
+                },
+                rules: {
+                    username: [
+                        {required: true, validator: nameCheck, trigger: 'blur'},
+                        //{min: 3, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur'}
+                    ],
+                    password: [
+                        {required: true, message: '请输入密码', trigger: 'blur'},
+                        {min: 3, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur'}
+                    ],
+                    password2: [
+                        {required: true, validator: password2, trigger: 'blur'},
+                        //{required: true, message: '请输入密码', trigger: 'blur'},
+                        {min: 3, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur'}
+                    ],
+                    fullname: [
+                        {required: true, message: '请输入真实姓名', trigger: 'blur'}
+                    ],
+                },
+            }
+        },
+        mounted() {
+        },
+        methods: {
+            password2(rule, value, callback) {
+                if (value === '') {
+                    callback(new Error('请再次输入密码'));
+                } else if (value !== this.ruleForm.password) {
+                    callback(new Error('两次输入密码不一致!'));
+                } else {
+                    callback();
+                }
+            },
+
+            submitForm(formName) {
+                this.$refs[formName].validate((valid) => {
+                    console.log(valid)
+                    if (valid) {
+                        this.register();
+                    } else {
+                        return false;
+                    }
+                });
+            },
+            resetForm(formName) {
+                this.$refs[formName].resetFields();
+            },
+
+            userNameCheck() {
+                axiosGet("/userNameCheck?username=" + this.ruleForm.username).then(res => {
+                    this.namecheck = res.status == 1 ? false : true;
+                })
+            },
+
+            register() {
+                axiosPost("/register",
+                    {
+                        username: this.ruleForm.username,
+                        password: encrypt(this.ruleForm.password),
+                        fullname: this.ruleForm.fullname
+                    }
+                ).then(res => {
+                    if (res.status == 0) {
+                        this.$message.success("注册成功，即将跳转登录页面");
+                        setTimeout(() => {
+                            window.location.href = "/page/login.html"
+                        }, 3000);
+                    } else if (res.status == 1) {
+                        this.$message.error(res.message);
+                    }
+                })
+            },
+            goLogin(){
+                window.location.href = "/page/login.html"
+            }
+        }
+    })
+</script>
+<style>
+    body {
+        /* 加载背景图 */
+        background-image: url(/static/image/login.jpg);
+        /* 背景图垂直、水平均居中 */
+        background-position: center center;
+        /* 背景图不平铺 */
+        background-repeat: no-repeat;
+        /* 当内容高度大于图片高度时，背景图像的位置相对于viewport固定 */
+        background-attachment: fixed;
+        /* 让背景图基于容器大小伸缩 */
+        background-size: cover;
+        /* 设置背景颜色，背景图加载过程中会显示背景色 */
+        background-color: #464646;
+    }
+    .leftHead {
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        height: 60px;
+        width: 390px;
+        background-color: #53909b;
+        text-align: center;
+        line-height: 60px;
+        font-size: 20px;
+        color: #fff;
+    }
+    .registerdiv{
+        height: 510px;
+        width: 390px;
+        background-color: #ffffff;
+        margin: 10% auto;
+        border-radius: 10px;
+    }
+    .registerForm{
+        width: 350px;
+        margin:0px auto;
+    }
+    .registerButton {
+        color: #FFF;
+        background-color: #53909b;
+        border-color: #53909b;
+        width: 170px;
+        margin-top: 10px;
+    }
+    .el-form-item {
+        margin-bottom: 10px;
+    }
+
+</style>
+</html>

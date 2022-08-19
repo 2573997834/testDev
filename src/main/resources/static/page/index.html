@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="/static/elementUI/css/index.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/page/css/index.css"/>
+</head>
+<script src="/static/vue/vue.min.js" type="text/javascript" charset="UTF-8"></script>
+<script src="/static/vue/axios.min.js" type="text/javascript" charset="UTF-8"></script>
+<script src="/static/vue/httpRequest.js" type="text/javascript" charset="UTF-8"></script>
+<script src="/static/elementUI/index.js" type="text/javascript" charset="UTF-8"></script>
+<body>
+<div id="app">
+    <el-container>
+        <el-aside width="200px" style="background-color: #23262e;">
+            <div class="leftHead">
+                TESTDEV
+            </div>
+            <el-menu background-color="#23262e"
+                     text-color="#fff"
+                     active-text-color="#ffd04b"
+                     :default-openeds="['1']">
+                <el-submenu :index="item.path" v-for="item in navList" :key="item.key" v-if="subtitleIsExist(item)">
+                    <template slot="title">
+                        <i class="el-icon-location"></i>
+                        <span>{{item.title}}</span>
+                    </template>
+                    <el-submenu :index="item2.path" v-for="item2 in item.children" :key="item2.key"
+                                v-if="subtitleIsExist(item2)">
+                        <template slot="title">{{item2.title}}</template>
+                        <el-menu-item :index="item3.path" v-for="item3 in item2.children" :key="item3.key"
+                                      @click="menuClick">
+                            <template slot="title">{{item3.title}}</template>
+                        </el-menu-item>
+                    </el-submenu>
+
+                    <el-menu-item :index="item2.path" @click="menuClick" v-else>
+                        <template slot="title">{{item2.title}}</template>
+                    </el-menu-item>
+                </el-submenu>
+                <el-menu-item :index="item.path" @click="menuClick" v-else>
+                    <template slot="title">
+                        <i class="el-icon-location"></i>
+                        <span>{{item.title}}</span>
+                    </template>
+                </el-menu-item>
+            </el-menu>
+        </el-aside>
+
+        <el-container>
+            <el-header style="text-align: right; font-size: 12px">
+                <el-dropdown>
+                    <i class="el-icon-setting" style="margin-right: 15px"></i>
+                    <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item @click="logout">注销</el-dropdown-item>
+                        <el-dropdown-item @cilck="goLogin">重新登录</el-dropdown-item>
+                    </el-dropdown-menu>
+                </el-dropdown>
+                <span>王小虎</span>
+            </el-header>
+            <el-breadcrumb separator="/">
+                <el-breadcrumb-item v-for="item in breadcrumb">
+                    <el-link :underline="false" @click="crumbClick(item.path)">{{item.title}}</el-link>
+                </el-breadcrumb-item>
+            </el-breadcrumb>
+
+            <el-main>
+                <iframe class="mainPage" :src="pagePath" style="width:100%;height:100%;" frameborder="no"
+                        scrolling="no"></iframe>
+            </el-main>
+        </el-container>
+    </el-container>
+</div>
+</body>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            name: '测试',
+            pagePath: '/page/welcome.html',
+            breadcrumb: [
+                {
+                    title: '首页',
+                    key: '001',
+                    path: '/page/welcome.html',
+                }
+            ],
+            navList: [],
+        },
+        mounted() {
+            this.getdata();
+        },
+        methods: {
+            getdata() {
+                axiosGet("/getMenu").then(res => {
+                    if (res.status == 0) {
+                        this.navList = res.data;
+                    }
+                })
+            },
+            menuClick(menu) {
+                this.pagePath = menu.index
+                //let iframe = document.querySelector("#iframe");
+                //this.populateIframe(iframe, [["Authorization", localStorage.getItem("access_token")]]);
+                this.breadcrumb = [];
+                this.breadcrumb.push(
+                    {
+                        title: '首页',
+                        key: '001',
+                        path: '/page/welcome.html',
+                    }
+                )
+                this.setBreadcrumb(menu.indexPath);
+            },
+            crumbClick(path) {
+                this.pagePath = path
+                this.delBreadcrumb(path);
+            },
+            subtitleIsExist(item) {
+                if (item.children && item.children.length > 0) {
+                    return true
+                } else {
+                    return false
+                }
+            },
+            setBreadcrumb(pathList) {
+                for (let i = 0; i < pathList.length; i++) {
+                    let path = pathList[i];
+                    let obj = this.findTitle(path, this.navList);
+                    this.breadcrumb.push(obj);
+                }
+            },
+            findTitle(path, list) {
+                for (let i = 0; i < list.length; i++) {
+                    if (list[i].path == path) {
+                        return list[i];
+                    } else if (list[i].hasOwnProperty('children') && list[i].children.length > 0) {
+                        let obj = this.findTitle(path, list[i].children);
+                        if (obj == undefined || obj == null) {
+                            continue;
+                        } else {
+                            return obj;
+                        }
+                    }
+                }
+            },
+            delBreadcrumb(path) {
+                for (let i = this.breadcrumb.length - 1; i >= 0; i--) {
+                    if (this.breadcrumb[i].path != path) {
+                        this.breadcrumb.splice(i, 1);
+                    }
+                }
+            },
+            goLogin(){
+                window.location.href = "/page/login.html"
+            },
+            logout(){
+
+            },
+            // populateIframe(iframe, headers) {
+            //     let xhr = new XMLHttpRequest();
+            //     xhr.open("GET", this.pagePath);
+            //     xhr.responseType = "blob";
+            //     headers.forEach((header) => {
+            //         xhr.setRequestHeader(header[0], header[1]);
+            //     });
+            //     xhr.onreadystatechange = () => {
+            //         if (xhr.readyState === xhr.DONE) {
+            //             if (xhr.status === 200) {
+            //                 iframe.src = URL.createObjectURL(xhr.response);
+            //             }
+            //         }
+            //     };
+            //     xhr.send();
+            // },
+        }
+    })
+</script>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="/static/elementUI/css/index.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/page/common/common.css"/>
+</head>
+<script src="/static/vue/vue.min.js" type="text/javascript" charset="UTF-8"></script>
+<script src="/static/vue/axios.min.js" type="text/javascript" charset="UTF-8"></script>
+<script src="/static/vue/httpRequest.js" type="text/javascript" charset="UTF-8"></script>
+<script src="/static/elementUI/index.js" type="text/javascript" charset="UTF-8"></script>
+<body>
+<div id="app" style="overflow: auto;">
+    <el-table
+            :data="page.list"
+            style="width: 100%">
+        <el-table-column
+                prop="title"
+                label="标题"
+                width="200">
+        </el-table-column>
+        <el-table-column
+                prop="classify"
+                label="类别"
+                width="200">
+        </el-table-column>
+        <el-table-column
+                prop="price"
+                label="价格(元)">
+        </el-table-column>
+        <el-table-column
+                prop="details"
+                label="详情">
+        </el-table-column>
+    </el-table>
+    <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="page.pageNum"
+            :page-sizes="[10, 20, 30, 50]"
+            :page-size="page.pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="page.total">
+    </el-pagination>
+</div>
+</body>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            name: '测试',
+            page: {
+                list:[],
+                pageSize: 10,
+                pageNum: 1,
+            },
+
+        },
+        mounted() {
+            this.getdata();
+        },
+        methods: {
+            getdata() {
+                this.page.list = [];
+                axiosPost("/goodsinfo/queryPage",this.page).then(res => {
+                    this.page = res;
+                })
+            },
+            handleSizeChange(val){
+                this.page.pageSize = val;
+                this.page.pageNum = 1;
+                this.getdata();
+            },
+            handleCurrentChange(val){
+                this.page.pageNum = val;
+                this.getdata();
+            }
+        }
+    })
+</script>
+</html>
