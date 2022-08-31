@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>用户注册</title>
-    <link rel="stylesheet" type="text/css" href="/static/elementUI/css/index.css"/>
+    <link rel="stylesheet" type="text/css" href="../elementUI/css/index.css"/>
 </head>
-<script src="/static/vue/vue.min.js" type="text/javascript" charset="UTF-8"></script>
-<script src="/static/vue/axios.min.js" type="text/javascript" charset="UTF-8"></script>
-<script src="/static/vue/httpRequest.js" type="text/javascript" charset="UTF-8"></script>
-<script src="/static/elementUI/index.js" type="text/javascript" charset="UTF-8"></script>
-<script src="/static/encrypt/encrypt.js" type="text/javascript" charset="UTF-8"></script>
+<script src="../vue/vue.min.js" type="text/javascript" charset="UTF-8"></script>
+<script src="../vue/axios.min.js" type="text/javascript" charset="UTF-8"></script>
+<script src="../vue/httpRequest.js" type="text/javascript" charset="UTF-8"></script>
+<script src="../elementUI/index.js" type="text/javascript" charset="UTF-8"></script>
+<script src="../encrypt/encrypt.js" type="text/javascript" charset="UTF-8"></script>
+<script src="../page/common/common.js" type="text/javascript" charset="UTF-8"></script>
 <body>
 <div id="app">
     <div class="registerdiv">
@@ -138,7 +139,7 @@
                     if (res.status == 0) {
                         this.$message.success("注册成功，即将跳转登录页面");
                         setTimeout(() => {
-                            window.location.href = "/page/login.html"
+                            window.location.href = baseUrl + "/page/login.html"
                         }, 3000);
                     } else if (res.status == 1) {
                         this.$message.error(res.message);
@@ -146,7 +147,7 @@
                 })
             },
             goLogin(){
-                window.location.href = "/page/login.html"
+                window.location.href = baseUrl + "/page/login.html"
             }
         }
     })
@@ -154,7 +155,7 @@
 <style>
     body {
         /* 加载背景图 */
-        background-image: url(/static/image/login.jpg);
+        background-image: url(../image/login.jpg);
         /* 背景图垂直、水平均居中 */
         background-position: center center;
         /* 背景图不平铺 */

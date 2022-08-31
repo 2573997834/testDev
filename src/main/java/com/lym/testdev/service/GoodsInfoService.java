@@ -1,7 +1,7 @@
 package com.lym.testdev.service;
 
 import com.lym.testdev.model.GoodsInfo;
-import com.lym.testdev.util.PageUtil;
+import com.lym.testdev.common.util.PageUtil;
 
 /**
  * service层

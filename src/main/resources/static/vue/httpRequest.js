@@ -1,12 +1,10 @@
 //axios封装post请求
-document.write('<script src="/static/vue/vue.min.js" type="text/javascript" charset="utf-8"></script>');
-document.write('<script src="/static/elementUI/index.js" type="text/javascript" charset="utf-8"></script>');
 function axiosPost(url,data,flag) {
     let headers = {
         'Content-Type':'application/json;charset=utf-8',
         'Authorization': localStorage.getItem("access_token")
     }
-    if (url.lastIndexOf("/doLogin") != -1) {
+    if (url.lastIndexOf("doLogin") != -1) {
         headers = {
             'Content-Type':'application/json;charset=utf-8'
         }
@@ -26,12 +24,12 @@ function axiosPost(url,data,flag) {
         if (error.response.status === 403) {
             localStorage.removeItem("access_token")
             alert("无权访问，请先登录");
-            window.location.href="/page/login.html"
+            window.location.href= baseUrl + "/page/login.html"
         }
         if (error.response.status === 401) {
             localStorage.removeItem("access_token")
             alert(error.response.data.message);
-            window.location.href="/page/login.html"
+            window.location.href= baseUrl + "/page/login.html"
         }
         return error.message;
     });
@@ -43,7 +41,7 @@ function axiosGet(url) {
     let headers = {
         'Authorization': localStorage.getItem("access_token")
     }
-    if (url.lastIndexOf("/doLogin") != -1) {
+    if (url.lastIndexOf("doLogin") != -1) {
         headers = {}
     }
     var result = axios({
@@ -60,12 +58,12 @@ function axiosGet(url) {
         if (error.response.status === 403) {
             localStorage.removeItem("access_token")
             alert("无权访问，请先登录");
-            window.location.href="/page/login.html"
+            window.location.href= baseUrl + "/page/login.html"
         }
         if (error.response.status === 401) {
             localStorage.removeItem("access_token")
             alert(error.response.data.message);
-            window.location.href="/page/login.html"
+            window.location.href= baseUrl + "/page/login.html"
         }
         return error.response.data.message;
     });

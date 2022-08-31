@@ -1,7 +1,7 @@
 package com.lym.testdev.dao;
 
-import com.lym.testdev.model.UserRole;
-import com.lym.testdev.util.MyMapper;
+import com.lym.testdev.common.model.UserRole;
+import com.lym.testdev.common.util.MyMapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

@@ -1,9 +1,9 @@
 package com.lym.testdev.service;
 
+import com.lym.testdev.common.model.MenuInfo;
+import com.lym.testdev.common.model.MenuTree;
+import com.lym.testdev.common.util.SessionUser;
 import com.lym.testdev.dao.MenuInfoMapper;
-import com.lym.testdev.model.MenuInfo;
-import com.lym.testdev.model.MenuTree;
-import com.lym.testdev.util.SessionUser;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

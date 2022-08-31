@@ -1,12 +1,14 @@
 package com.lym.testdev.controller;
 
+import com.lym.testdev.common.util.PageUtil;
+import com.lym.testdev.common.util.Result;
 import com.lym.testdev.model.GoodsInfo;
 import com.lym.testdev.service.GoodsInfoService;
-import com.lym.testdev.util.PageUtil;
-import com.lym.testdev.util.Result;
-import oracle.ucp.proxy.annotation.Post;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/goodsinfo")

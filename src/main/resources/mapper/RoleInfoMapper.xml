@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lym.testdev.dao.RoleInfoMapper">
-  <resultMap id="BaseResultMap" type="com.lym.testdev.model.RoleInfo">
+  <resultMap id="BaseResultMap" type="com.lym.testdev.common.model.RoleInfo">
     <id column="roleid" jdbcType="VARCHAR" property="roleid" />
     <result column="rolename" jdbcType="VARCHAR" property="rolename" />
   </resultMap>

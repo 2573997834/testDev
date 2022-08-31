@@ -4,7 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.lym.testdev.service.GoodsInfoService;
 import com.lym.testdev.dao.GoodsInfoDao;
 import com.lym.testdev.model.GoodsInfo;
-import com.lym.testdev.util.PageUtil;
+import com.lym.testdev.common.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;

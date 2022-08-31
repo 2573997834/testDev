@@ -1,5 +1,5 @@
 server:
-  port: 8080 #8080
+  port: 8080
   servlet:
     context-path: /
     session:
@@ -13,6 +13,12 @@ server:
     min-spare-threads: 30
 
 spring:
+  application:
+    name: testdev
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848 #nacos地址
   # 文件上传
   servlet:
     multipart:
@@ -24,7 +30,9 @@ spring:
     view:
       prefix: /templates
       suffix: .html
-#    static-path-pattern: /static/**
+    static-path-pattern: /**
+  resources:
+    static-locations: classpath:/static/,classpath:/resources/,classpath:/public/
   thymeleaf:
     cache: false
   # Redis配置
@@ -95,7 +103,11 @@ spring:
       additional-paths: src/main/java #重启目录
 mybatis:
   mapper-locations: classpath:mapper/*.xml
-  type-aliases-package: com.oms.testdev.model
+  type-aliases-package: com.lym.testdev.model
 logging:
   level:
-    com.oms.testdev.dao: debug
+    com.lym.testdev.dao: debug
+login:
+  timeout: 2 #分钟
+  jwt:
+    key: 78sebr72umyxxxxx

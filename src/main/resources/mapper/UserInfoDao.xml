@@ -3,7 +3,7 @@
 
 <mapper namespace="com.lym.testdev.dao.UserInfoDao">
     <!-- 可根据自己的需求，是否要使用 -->
-    <resultMap type="com.lym.testdev.model.UserInfo" id="BaseResultMap">
+    <resultMap type="com.lym.testdev.common.model.UserInfo" id="BaseResultMap">
         <result property="userid" column="userid"/>
         <result property="username" column="username"/>
         <result property="password" column="password"/>

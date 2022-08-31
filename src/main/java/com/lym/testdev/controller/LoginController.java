@@ -1,10 +1,10 @@
 package com.lym.testdev.controller;
 
-import com.lym.testdev.model.MenuTree;
-import com.lym.testdev.model.UserInfo;
+import com.lym.testdev.common.model.MenuTree;
+import com.lym.testdev.common.model.UserInfo;
+import com.lym.testdev.common.util.Result;
 import com.lym.testdev.service.MenuServiceImpl;
 import com.lym.testdev.service.UserServiceImpl;
-import com.lym.testdev.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
